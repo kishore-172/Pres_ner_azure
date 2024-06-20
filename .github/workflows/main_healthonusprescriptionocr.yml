@@ -26,15 +26,19 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Install Tesseract OCR
+      - name: Create packages.txt
+        run: |
+          echo -e "tesseract-ocr\ntesseract-ocr-por" > packages.txt
+
+      - name: Install Tesseract OCR packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y tesseract-ocr
-        
+          xargs -a packages.txt sudo apt-get install -y
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
